@@ -13,3 +13,14 @@ class BrandService():
         except Exception as e:
             print(e)
             return jsonify({'message': 'unable to retrieve brands'}), 500
+
+    def get_single_brand(self, brand_name):
+        try:
+            brand = Brand.query.filter_by(name=brand_name.lower()).first()
+            if brand is None:
+                return jsonify({}), 200
+            return_brand = {'uuid': brand.uuid, 'name': brand.name, 'type': ('' if brand.type is None else brand.type)}
+            return jsonify(return_brand)
+        except Exception as e:
+            print(e)
+            return jsonify({'message': 'unable to retrieve brand'}), 500
