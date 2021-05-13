@@ -63,20 +63,20 @@ def get_brands():
     return brand_service().get_all_brands(all_brands, page)
 
 
-@app.route('/brands/<string:brand_name>', methods=['GET'])
+@app.route('/brand/<string:brand_name>', methods=['GET'])
 @cross_origin()
 def get_single_brand(brand_name):
     return brand_service().get_single_brand(brand_name)
 
 
 
-@app.route('/drinks/<string:drink_name>', methods=['GET'])
+@app.route('/drink/<string:drink_name>', methods=['GET'])
 @cross_origin()
 def get_single_drink(drink_name):
     return drink_service().get_single_drink(drink_name)
 
 
-@app.route('/bars/<string:bar_name>', methods=['GET'])
+@app.route('/bar/<string:bar_name>', methods=['GET'])
 @cross_origin()
 def get_single_bar(bar_name):
     return bar_service().get_single_bar(bar_name)
