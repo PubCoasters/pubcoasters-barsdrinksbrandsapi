@@ -12,7 +12,7 @@ class BrandService():
                 if len(brand.user_brand) == 0:
                     return_brand = {
                         'uuid': brand.uuid, 
-                        'name': brand.name, 
+                        'brandName': brand.name, 
                         'type': ('' if brand.type is None else brand.type),
                         'userLiked': False
                     }
@@ -20,7 +20,7 @@ class BrandService():
                    user_found = user in (obj.user_name for obj in brand.user_brand)
                    return_brand = {
                         'uuid': brand.uuid, 
-                        'name': brand.name, 
+                        'brandName': brand.name, 
                         'type': ('' if brand.type is None else brand.type),
                         'userLiked': user_found
                     } 
@@ -38,7 +38,7 @@ class BrandService():
             if len(brand.user_brand) == 0:
                 return_brand = {
                     'uuid': brand.uuid, 
-                    'name': brand.name,
+                    'brandName': brand.name,
                     'type': ('' if brand.type is None else brand.type),
                     'userLiked': False
                 }
@@ -46,7 +46,7 @@ class BrandService():
                 user_found = user in (obj.user_name for obj in brand.user_brand)
                 return_brand = {
                     'uuid': brand.uuid, 
-                    'name': brand.name, 
+                    'brandName': brand.name, 
                     'type': ('' if brand.type is None else brand.type),
                     'userLiked': user_found
                 } 
