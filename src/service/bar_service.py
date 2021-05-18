@@ -2,20 +2,37 @@ from flask import jsonify
 from src.models.bar import Bar
 from src.models.location import Location
 from src.models.neighborhood import Neighborhood
+from src.models.user_bar import UserBar
 from src.app import db
 
 class BarService():
 
-    def get_all_bars(self, all_bars, offset):
+    def get_all_bars(self, all_bars, user, offset):
         try:
-            bars = db.session.query(Bar, Location).filter(Location.id == Bar.location_id).paginate(page=offset, per_page=5)
-            for bar, location in bars.items:
+            bars_info = Bar.query.outerjoin(UserBar, Bar.id == UserBar.bar_id).join(Location, Location.id == Bar.location_id).outerjoin(Neighborhood, Neighborhood.id == Bar.neighborhood_id).paginate(page=offset, per_page=5)
+            for data in bars_info.items:
                 return_bar = None
-                if bar.neighborhood_id is not None:
-                    nbhood = Neighborhood.query.filter_by(id=bar.neighborhood_id).first()
-                    return_bar = {'uuid': bar.uuid, 'bar': bar.name, 'location': location.location, 'address': ('' if bar.address is None else bar.address), 'type': ('' if bar.type is None else bar.type), 'neighborhood': nbhood.neighborhood}
+                if len(data.user_bar) == 0:
+                    return_bar = {
+                        'uuid': data.uuid,
+                        'bar': data.name,
+                        'location': data.location.location,
+                        'address': ('' if data.address is None else data.address),
+                        'type': ('' if data.type is None else data.type),
+                        'neighborhood': ('' if data.neighborhood is None else data.neighborhood.neighborhood),
+                        'userLiked': False
+                    }
                 else:
-                    return_bar = {'uuid': bar.uuid, 'bar': bar.name, 'location': location.location, 'address': ('' if bar.address is None else bar.address), 'type': ('' if bar.type is None else bar.type), 'neighborhood': ''}
+                   user_found = user in (obj.user_name for obj in data.user_bar)
+                   return_bar = {
+                        'uuid': data.uuid,
+                        'bar': data.name,
+                        'location': data.location.location,
+                        'address': ('' if data.address is None else data.address),
+                        'type': ('' if data.type is None else data.type),
+                        'neighborhood': ('' if data.neighborhood is None else data.neighborhood.neighborhood),
+                        'userLiked': user_found
+                    } 
                 all_bars.append(return_bar)
             return jsonify(all_bars)
         except Exception as e:
@@ -23,17 +40,33 @@ class BarService():
             return jsonify({'message': 'unable to retrieve bars'}), 500
 
     
-    def get_single_bar(self, bar_name):
+    def get_bar_by_name(self, bar_name, user, page):
         try:
-            bars = db.session.query(Bar, Location).filter(Location.id == Bar.location_id).filter_by(name=bar_name.lower()).all()
+            bar_info = Bar.query.filter_by(name=bar_name.lower()).outerjoin(UserBar, Bar.id == UserBar.bar_id).join(Location, Location.id == Bar.location_id).outerjoin(Neighborhood, Neighborhood.id == Bar.neighborhood_id).paginate(page=page, per_page=5)
             return_bars = []
-            for bar, location in bars:
+            for data in bar_info.items:
                 return_bar = None
-                if bar.neighborhood_id is not None:
-                    nbhood = Neighborhood.query.filter_by(id=bar.neighborhood_id).first()
-                    return_bar = {'uuid': bar.uuid, 'bar': bar.name, 'location': location.location, 'address': ('' if bar.address is None else bar.address), 'type': ('' if bar.type is None else bar.type), 'neighborhood': nbhood.neighborhood}
+                if len(data.user_bar) == 0:
+                    return_bar = {
+                        'uuid': data.uuid,
+                        'bar': data.name,
+                        'location': data.location.location,
+                        'address': ('' if data.address is None else data.address),
+                        'type': ('' if data.type is None else data.type),
+                        'neighborhood': ('' if data.neighborhood is None else data.neighborhood.neighborhood),
+                        'userLiked': False
+                    }
                 else:
-                    return_bar = {'uuid': bar.uuid, 'bar': bar.name, 'location': location.location, 'address': ('' if bar.address is None else bar.address), 'type': ('' if bar.type is None else bar.type), 'neighborhood': ''}
+                   user_found = user in (obj.user_name for obj in data.user_bar)
+                   return_bar = {
+                        'uuid': data.uuid,
+                        'bar': data.name,
+                        'location': data.location.location,
+                        'address': ('' if data.address is None else data.address),
+                        'type': ('' if data.type is None else data.type),
+                        'neighborhood': ('' if data.neighborhood is None else data.neighborhood.neighborhood),
+                        'userLiked': user_found
+                    } 
                 return_bars.append(return_bar)
             return jsonify(return_bars)
         except Exception as e:

@@ -25,58 +25,66 @@ def test():
 @cross_origin()
 def get_bars():
     all_bars = []
-
+    user_arg = request.args.get('user')
     req_arg = request.args.get('offset')
     if (req_arg is None):
         page = 1
     else:
         page = int(req_arg)
 
-    return bar_service().get_all_bars(all_bars, page)
+    return bar_service().get_all_bars(all_bars, user_arg, page)
 
 
 @app.route('/drinks', methods=['GET'])
 @cross_origin()
 def get_drinks():
     all_drinks = []
-
+    user_arg = request.args.get('user')
     req_arg = request.args.get('offset')
     if (req_arg is None):
         page = 1
     else:
         page = int(req_arg)
 
-    return drink_service().get_all_drinks(all_drinks, page)
+    return drink_service().get_all_drinks(all_drinks, user_arg, page)
 
 
 @app.route('/brands', methods=['GET'])
 @cross_origin()
 def get_brands():
     all_brands = []
-
+    user_arg = request.args.get('user')
     req_arg = request.args.get('offset')
     if (req_arg is None):
         page = 1
     else:
         page = int(req_arg)
 
-    return brand_service().get_all_brands(all_brands, page)
+    return brand_service().get_all_brands(all_brands, user_arg, page)
 
 
 @app.route('/brand/<string:brand_name>', methods=['GET'])
 @cross_origin()
 def get_single_brand(brand_name):
-    return brand_service().get_single_brand(brand_name)
+    user_arg = request.args.get('user')
+    return brand_service().get_single_brand(brand_name, user_arg)
 
 
 
 @app.route('/drink/<string:drink_name>', methods=['GET'])
 @cross_origin()
 def get_single_drink(drink_name):
-    return drink_service().get_single_drink(drink_name)
+    user_arg = request.args.get('user')
+    return drink_service().get_single_drink(drink_name, user_arg)
 
 
 @app.route('/bar/<string:bar_name>', methods=['GET'])
 @cross_origin()
 def get_single_bar(bar_name):
-    return bar_service().get_single_bar(bar_name)
+    user_arg = request.args.get('user')
+    req_arg = request.args.get('offset')
+    if (req_arg is None):
+        page = 1
+    else:
+        page = int(req_arg)
+    return bar_service().get_bar_by_name(bar_name, user_arg, page)
