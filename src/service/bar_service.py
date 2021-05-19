@@ -37,6 +37,8 @@ class BarService():
             return jsonify(all_bars)
         except Exception as e:
             print(e)
+            if (e.__str__() == '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.'):
+                return jsonify([])
             return jsonify({'message': 'unable to retrieve bars'}), 500
 
     
@@ -71,5 +73,7 @@ class BarService():
             return jsonify(return_bars)
         except Exception as e:
             print(e)
+            if (e.__str__() == '404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.'):
+                return jsonify([])
             return jsonify({'message': 'unable to retrieve bars'}), 500
 
