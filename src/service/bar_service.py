@@ -15,7 +15,7 @@ class BarService():
                 if len(data.user_bar) == 0:
                     return_bar = {
                         'uuid': data.uuid,
-                        'bar': data.name,
+                        'barName': data.name,
                         'location': data.location.location,
                         'address': ('' if data.address is None else data.address),
                         'type': ('' if data.type is None else data.type),
@@ -49,7 +49,7 @@ class BarService():
                 if len(data.user_bar) == 0:
                     return_bar = {
                         'uuid': data.uuid,
-                        'bar': data.name,
+                        'barName': data.name,
                         'location': data.location.location,
                         'address': ('' if data.address is None else data.address),
                         'type': ('' if data.type is None else data.type),

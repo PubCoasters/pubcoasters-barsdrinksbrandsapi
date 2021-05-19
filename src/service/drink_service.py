@@ -11,14 +11,14 @@ class DrinkService():
                 if len(drink.user_drink) == 0:
                     return_drink = {
                         'uuid': drink.uuid, 
-                        'name': drink.name,
+                        'drinkName': drink.name,
                         'userLiked': False
                     }
                 else:
                     user_found = user in (obj.user_name for obj in drink.user_drink)
                     return_drink = {
                         'uuid': drink.uuid, 
-                        'name': drink.name,
+                        'drinkName': drink.name,
                         'userLiked': user_found
                     }
                 all_drinks.append(return_drink)
@@ -35,14 +35,14 @@ class DrinkService():
             if len(drink.user_drink) == 0:
                 return_drink = {
                     'uuid': drink.uuid, 
-                    'name': drink.name,
+                    'drinkName': drink.name,
                     'userLiked': False
                 }
             else:
                 user_found = user in (obj.user_name for obj in drink.user_drink)
                 return_drink = {
                     'uuid': drink.uuid, 
-                    'name': drink.name,
+                    'drinkName': drink.name,
                     'userLiked': user_found
                 }
             return jsonify(return_drink)
