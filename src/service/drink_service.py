@@ -6,7 +6,7 @@ class DrinkService():
 
     def get_all_drinks(self, all_drinks, user, offset):
         try:
-            drinks = Drink.query.outerjoin(UserDrink, Drink.id == UserDrink.drink_id).paginate(page=offset, per_page=5)
+            drinks = Drink.query.distinct().outerjoin(UserDrink, Drink.id == UserDrink.drink_id).paginate(page=offset, per_page=5)
             for drink in drinks.items:
                 if len(drink.user_drink) == 0:
                     return_drink = {
@@ -32,7 +32,7 @@ class DrinkService():
     def get_single_drink(self, drink_name, user):
         try:
             return_drinks = []
-            drink = Drink.query.filter_by(name=drink_name.lower()).outerjoin(UserDrink, Drink.id == UserDrink.drink_id).first()
+            drink = Drink.query.distinct().filter_by(name=drink_name.lower()).outerjoin(UserDrink, Drink.id == UserDrink.drink_id).first()
             if drink is None:
                 return jsonify([]), 200
             if len(drink.user_drink) == 0:

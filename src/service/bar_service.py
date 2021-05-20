@@ -9,7 +9,7 @@ class BarService():
 
     def get_all_bars(self, all_bars, user, offset):
         try:
-            bars_info = Bar.query.outerjoin(UserBar, Bar.id == UserBar.bar_id).join(Location, Location.id == Bar.location_id).outerjoin(Neighborhood, Neighborhood.id == Bar.neighborhood_id).paginate(page=offset, per_page=5)
+            bars_info = Bar.query.distinct().outerjoin(UserBar, Bar.id == UserBar.bar_id).join(Location, Location.id == Bar.location_id).outerjoin(Neighborhood, Neighborhood.id == Bar.neighborhood_id).paginate(page=offset, per_page=5)
             for data in bars_info.items:
                 return_bar = None
                 if len(data.user_bar) == 0:
@@ -44,7 +44,7 @@ class BarService():
     
     def get_bar_by_name(self, bar_name, user, page):
         try:
-            bar_info = Bar.query.filter_by(name=bar_name.lower()).outerjoin(UserBar, Bar.id == UserBar.bar_id).join(Location, Location.id == Bar.location_id).outerjoin(Neighborhood, Neighborhood.id == Bar.neighborhood_id).paginate(page=page, per_page=5)
+            bar_info = Bar.query.distinct().filter_by(name=bar_name.lower()).outerjoin(UserBar, Bar.id == UserBar.bar_id).join(Location, Location.id == Bar.location_id).outerjoin(Neighborhood, Neighborhood.id == Bar.neighborhood_id).paginate(page=page, per_page=5)
             return_bars = []
             for data in bar_info.items:
                 return_bar = None
