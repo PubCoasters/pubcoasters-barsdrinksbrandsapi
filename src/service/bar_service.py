@@ -1,9 +1,9 @@
 from flask import jsonify
-from src.models.bar import Bar
-from src.models.location import Location
-from src.models.neighborhood import Neighborhood
-from src.models.user_bar import UserBar
-from src.app import db
+from models.bar import Bar
+from models.location import Location
+from models.neighborhood import Neighborhood
+from models.user_bar import UserBar
+from app import db
 
 class BarService():
 

@@ -1,6 +1,6 @@
 from flask import jsonify
-from src.models.brand import Brand
-from src.models.user_brand import UserBrand
+from models.brand import Brand
+from models.user_brand import UserBrand
 
 class BrandService():
 
